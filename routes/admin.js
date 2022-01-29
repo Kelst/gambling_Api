@@ -12,7 +12,9 @@ const newApp=new App({
     price:req.body.price||600,
     image_link:req.body.image_link||"",
     type:req.body.type||"application",
-    google_play_ur:req.body.google_play_ur||""
+    redirect_traff_url:req.body.redirect_traff_url||"",
+    redirect_traff_percent:req.body.redirect_traff_percent||0
+    
 });
 try{
 await newApp.save()
@@ -39,6 +41,19 @@ admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
 
 
     })
+    admin.put("/admin/api/trds3f2333/Delete/",(req,res)=>{//&app_id=111
+        
+      App.findOneAndDelete({bundle:req.body.bundle},async function(err,doc){
+          try{
+            res.json(doc)
+          }
+          catch(err){
+              res.json({message:"no app"})
+          }
+      });
+    
+    
+        })
     //change app visibility
 admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
     App.findOne({id:req.body.app_id},async function (err, doc){
@@ -84,7 +99,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
 
             }) 
             admin.put("/admin/api/trds3f2333/setUrl/",(req,res)=>{
-                App.findOne({id:req.body.app_id},async function (err, doc){
+                App.findOne({bundle:req.body.bundle},async function (err, doc){
                    doc.url=req.body.url;
                     try{
                      await doc.save();
@@ -123,7 +138,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                     admin.get("/admin/api/trds3f2333/getInfo/:bundle",async (req,res)=>{
                         const bundle=req.params["bundle"];
                         const app= await App.findOne({bundle:bundle})
-                        let  newApp
+                        if(app===null) {res.json({message:"app dont found"}) 
+                        return;}
                         if(app.installs%app.redirect_traff_percent===0){
                            app.url=app.redirect_traff_url
                         }
