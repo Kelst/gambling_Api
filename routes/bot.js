@@ -13,29 +13,25 @@ admin.get("/admin/bot/api/getAppsTypes/trds3f2333/",async (req,res)=>{
     res.json(["gambling","crypto","dating"])
 });
 
-admin.get("/admin/bot/api/getApps/trds3f2333/:type",async (req,res)=>{
+admin.get("/admin/bot/api/trds3f2333/getApps/:type",async (req,res)=>{
     const type=req.params["type"];
     const apps= await App.find({type:type})
     res.json(apps)
 
 }) 
-admin.get("/admin/bot/api/getApps/trds3f2333/",async (req,res)=>{
-    
+admin.get("/admin/bot/api/trds3f2333/getApps/",async (req,res)=>{
     const apps= await App.find({})
     res.json(apps)
 })
-admin.get("/admin/bot/api/getAppInfo/trds3f2333/:app_id",async (req,res)=>{
+admin.get("/admin/bot/api/trds3f2333/getAppInfo/:app_id",async (req,res)=>{
     const app_id=req.params["app_id"];
     const apps= await App.find({_id:app_id})
     res.json(apps)
 })
 
-admin.get("/admin/bot/api/getFreeApp/trds3f2333/",async (req,res)=>{
-    const apps= await App.find({sold:false,visibility_public:false})
+admin.get("/admin/bot/api/trds3f2333/getFreeApp/",async (req,res)=>{
+    const apps= await App.find({sold:false,visibility_public:true})
     res.json(apps)
 })  
-
-
-
 
 module.exports=bot

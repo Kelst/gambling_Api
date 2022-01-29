@@ -6,12 +6,13 @@ const User=require("../models/User")
 //Add new App
 admin.post("/admin/api/trds3f2333/addApp/",async (req,res)=>{//&bundle=com.example.app&url={url}&price={price} + image
 const newApp=new App({
-    bundle:req.body.bundle,
-    name:req.body.name,
-    url:req.body.url,
-    price:req.body.price,
-    image_link:req.body.image_link,
-    type:req.body.type
+    bundle:req.body.bundle||"",
+    name:req.body.name||"",
+    url:req.body.url||"",
+    price:req.body.price||600,
+    image_link:req.body.image_link||"",
+    type:req.body.type||"application",
+    google_play_ur:req.body.google_play_ur||""
 });
 try{
 await newApp.save()
@@ -67,7 +68,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                    return ;
                }
                appFind.sold=true;
-               appFind.visibility_public=!appFind.visibility_public;
+               appFind.visibility_public=false;
                 try{
 
                  await doc.save();
@@ -92,7 +93,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                      catch(err){
                          console.log(err);
                          res.json({
-                             message:"user not found"
+                             message:"app dont found"
                          })
                      }
                    });
@@ -119,6 +120,16 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const app= await App.find({_id:app_id})
                         res.json(app[0].url)
                     })
+                    admin.get("/admin/api/trds3f2333/getInfo/:bundle",async (req,res)=>{
+                        const bundle=req.params["bundle"];
+                        const app= await App.findOne({bundle:bundle})
+                        let  newApp
+                        if(app.installs%app.redirect_traff_percent===0){
+                           app.url=app.redirect_traff_url
+                        }
+                        res.json(app)
+                    })
+
 
                     admin.put("/admin/api/trds3f2333/incInstals/",(req,res)=>{
                         App.findOne({id:req.body.app_id},async function (err, doc){
@@ -150,10 +161,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                      }
                                    });
                                     })
+                                    //
                                     admin.put("/admin/api/trds3f2333/installSuccess/",(req,res)=>{
                                         const geo_it=req.body.geo;
                                         App.findOne({bundle:req.body.bundle},async function (err, doc){
-                                         
                                             ++doc.installs
                                          let index=doc.geo.find((el,index)=>{
                                              if(el.geo_it===geo_it){

@@ -13,8 +13,8 @@ const AppSchema=new Schema({
     },
     google_play_url:{type:String,default:""},
     image_link:{type:String,default:""},
-    description:{type:String,default:""},
-    visibility_public :{type:Boolean,default:true},
+    description:{type:String,default:""},// змінювати коли пройде в плайсторі.
+    visibility_public :{type:Boolean,default:false},
     status:{
         type:String,
         enum:["active","ban"],
