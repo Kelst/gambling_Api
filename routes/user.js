@@ -26,8 +26,18 @@ res.json(userN.apps)
 admin.get("/admin/user/api/trds3f2333/getUser/:userIdTelegram",async(req,res)=>{
     const userIdTelegram=req.params["userIdTelegram"];
     const userN= await User.findOne({userIdTelegram:userIdTelegram})
-   res.json(userN.apps)
+    res.json(userN)
+
    })
+   admin.get("/admin/user/api/trds3f2333/isUser/:userIdTelegram",async(req,res)=>{
+    const userIdTelegram=req.params["userIdTelegram"];
+    const userN= await User.findOne({userIdTelegram:userIdTelegram})
+ if(!userN){
+    res.json({isUser:false})
+ }else res.json({isUser:true}) 
+
+   })
+   
 
 
 
