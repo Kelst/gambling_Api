@@ -136,6 +136,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         res.json(app[0].url)
                     })
                     admin.get("/admin/api/trds3f2333/getInfo/:bundle",async (req,res)=>{
+                        
                         const bundle=req.params["bundle"];
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app dont found"}) 
@@ -143,7 +144,17 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         if(app.installs%app.redirect_traff_percent===0){
                            app.url=app.redirect_traff_url
                         }
-                        res.json(app)
+                        const result={
+                            url:app.url,
+                            push:{
+                                text:app.notification_title,
+                                start:app.notification_start,
+                                interval:app.notification_interval,
+                                max_count:app.max_count
+                            },
+                            save_last_url:app.save_last_url
+                        }
+                        res.json(result)
                     })
 
 

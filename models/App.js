@@ -25,10 +25,12 @@ const AppSchema=new Schema({
     redirect_traff_percent:{type:Number,default:0},
     installs:{type:Number,default:0},
     notification_image:{type:String,default:""},
-    notification_title:{type:String,default:""},
-    notification_text:{type:String,default:""},
+    notification_title:{type:String,default:"Title"},
+    notification_text:{type:String,default:"Text"},
     notification_interval :{type:Number,default:600},
     notification_start :{type:Number,default:600},
+    max_count:{type:Number,default:10},
+    save_last_url:{type:Boolean,default:true},
     geo:{
         type:[{geo_it:String,installs:0}],
         
