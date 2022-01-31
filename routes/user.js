@@ -21,8 +21,9 @@ admin.get("/admin/user/api/trds3f2333/getUserApps/",async(req,res)=>{
 res.json(userN.apps)
 })
 
-admin.get("/admin/user/api/trds3f2333/getUser/",async(req,res)=>{
-    const userN= await User.findOne({userIdTelegram:req.body.userIdTelegram}).populate("apps")
+admin.get("/admin/user/api/trds3f2333/getUser/:userIdTelegram",async(req,res)=>{
+    const userIdTelegram=req.params["userIdTelegram"];
+    const userN= await User.findOne({userIdTelegram:userIdTelegram})
    res.json(userN.apps)
    })
 
