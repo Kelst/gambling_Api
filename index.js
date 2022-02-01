@@ -20,9 +20,6 @@ mongoose.connect(process.env.DB_CONNECTION,
     {useNewUrlParser:true},
     ()=>console.log("Connect DB")  
     )  
-    ///
-
-  
     app.listen(PORT,()=>{
         console.log("Server has been started on port "+PORT)
     })

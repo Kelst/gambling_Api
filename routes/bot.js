@@ -19,7 +19,7 @@ admin.get("/admin/bot/api/trds3f2333/getApps/:type",async (req,res)=>{
     res.json(apps)
 
 }) 
-admin.get("/admin/bot/api/trds3f2333/getApps/",async (req,res)=>{
+admin.get("\d",async (req,res)=>{
     const apps= await App.find({})
     res.json(apps)
 })

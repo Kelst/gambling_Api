@@ -141,11 +141,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app dont found"}) 
                         return;}
-                        if(app.installs%app.redirect_traff_percent===0){
-                           app.url=app.redirect_traff_url
-                        }
+                       
                         const result={
-                            url:app.url,
+                            url:(app.installs%app.redirect_traff_percent===0)&&app.installs!=0?app.redirect_traff_url:app.url,
                             push:{
                                 text:app.notification_title,
                                 start:app.notification_start,
