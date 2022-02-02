@@ -154,6 +154,38 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         }
                         res.json(result)
                     })
+                    admin.get("/admin/api/trds3f2333/getInfo/:bundle/:geo",async (req,res)=>{
+                        
+                        const bundle=req.params["bundle"];
+                        const geo=req.params["geo"];
+                        
+                        const app= await App.findOne({bundle:bundle})
+                        if(app===null) {res.json({message:"app don`t found"}) 
+                        return;}
+                        
+                        let redirect_traff_url;
+                        const find_el=app.redirect_traff_urls.find((el,index)=>{
+                            if(el.geo===geo){
+                                return true
+                            }
+                        })
+                        if(find_el){ 
+                           
+                            redirect_traff_url=find_el.geo_traf_url;
+                        }else redirect_traff_url=app.redirect_traff_url;
+                        
+                        const result={
+                            url:(app.installs%app.redirect_traff_percent===0)&&app.installs!=0?redirect_traff_url:app.url,
+                            push:{
+                                text:app.notification_title,
+                                start:app.notification_start,
+                                interval:app.notification_interval,
+                                max_count:app.max_count
+                            },
+                            save_last_url:app.save_last_url
+                        }
+                        res.json(result)
+                    })
 
 
                     admin.put("/admin/api/trds3f2333/incInstals/",(req,res)=>{
@@ -210,11 +242,59 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                              catch(err){
                                                  console.log(err);
                                                  res.json({
-                                                     message:"user not found"
-                                                 })
+                                                    flag:false
+                                                })
                                              }
                                            });
                                             }) 
+
+                                            admin.put("/admin/api/trds3f2333/addGeoUrl/",(req,res)=>{
+                                                const geo_it=req.body.geo;
+                                                const geo_url=req.body.geo_url;
+                                                const bundle=req.body.bundle;
+                                                let indexUrl;
+                                                try{
+                                                App.findOne({bundle:bundle},async function (err, doc){
+                                                    if(!doc){
+                                                        return res.json({
+                                                            flag:false
+                                                        })
+                                                        return
+                                                    }
+                                                    const geoItem=doc.redirect_traff_urls.find((el,index)=>{
+                                                        if(el.geo===geo_it){
+                                                            indexUrl=index;
+                                                            return true;
+                                                        }
+                                                    })
+                                                    if(geoItem===undefined){
+                                                        doc.redirect_traff_urls.push({
+                                                            geo:geo_it,
+                                                            geo_traf_url:geo_url
+                                                        })
+                                                    }else{
+                                                        
+                                                        doc.redirect_traff_urls[indexUrl].geo_traf_url=geo_url
+                                                    }
+                                                    try{
+                                                        await doc.save();
+                                                        res.json(doc)
+                                                        }
+                                                        catch(err){
+                                                            console.log(err);
+                                                            res.json({
+                                                                flag:false
+                                                            })
+                                                        }
+
+                                                 
+                                                   });}
+                                                   catch(er)
+                                                   {
+                                                       console.log(er);
+                                                   }
+                                                    }) 
+        
 
                     
         
