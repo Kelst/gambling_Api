@@ -5,6 +5,11 @@ const AppSchema=new Schema({
     bundle:String,
     name:{type:String,default:"Test Name"},
     price:Number,
+    confirm_app:{
+        type:Boolean,
+        default:false
+    }
+    ,
     url:{type:String,default:""},
     type:{
         type:String,
