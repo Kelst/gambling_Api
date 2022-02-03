@@ -74,14 +74,16 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
         //approve App userIdTelegram
           admin.put("/admin/api/trds3f2333/approveApp/",async(req,res)=>{//bundle=com.example.app
             const appFind= await App.findOne({bundle:req.body.bundle});
-            if(appFind.sold===true){
-                res.json({
-                    message:"App sold"
-                })
-                return ;
-            }
+           
             User.findOne({userIdTelegram:appFind.user_confirm},async function (err, doc){
+                if(appFind.sold===true){
+                    res.json({
+                        message:"App sold"
+                    })
+                    return ;
+                }
                doc.apps=[...doc.apps,appFind._id];
+
                appFind.sold=true;
                appFind.visibility_public=false;
                appFind.confirm_app=false;
@@ -301,6 +303,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                     
                                                     admin.get("/admin/api/trds3f2333/getConfirmApp/",async (req,res)=>{
                                                         const app= await App.find({confirm_app:true})
+                                                       await res.json(app)
+                                                    })
+                                                    admin.get("/admin/api/trds3f2333/getActiveApp/",async (req,res)=>{
+                                                        const app= await App.find({status:true})
                                                        await res.json(app)
                                                     })
         
