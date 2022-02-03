@@ -8,6 +8,10 @@ const AppSchema=new Schema({
     confirm_app:{
         type:Boolean,
         default:false
+    },
+    user_confirm:{
+        type:String,
+        default:""
     }
     ,
     url:{type:String,default:""},
