@@ -84,6 +84,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                }
                appFind.sold=true;
                appFind.visibility_public=false;
+               appFind.confirm_app=false;
                 try{
 
                  await doc.save();
@@ -298,9 +299,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
 
                     
                                                     admin.get("/admin/api/trds3f2333/getConfirmApp/",async (req,res)=>{
-                    
                                                         const app= await App.find({confirm_app:true})
-                                                        res.json(app)
+                                                       await res.json(app)
                                                     })
         
 
