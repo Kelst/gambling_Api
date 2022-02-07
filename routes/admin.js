@@ -335,7 +335,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                        await res.json(app)
                                                     })
                                                     admin.get("/admin/api/trds3f2333/getActiveApp/",async (req,res)=>{
-                                                        const app= await App.find({status:"active",visibility_public:true,sold:false,confirm_app:false})
+                                                        const app= await App.find({status:"active",sold:false,confirm_app:false})
                                                         await res.json(app)
                                                     })
         
