@@ -12,6 +12,10 @@ const AppSchema=new Schema({
     user_confirm:{
         type:String,
         default:""
+    },
+    dateConfirm:{
+        type:String,
+        default:""
     }
     ,
     url:{type:String,default:""},

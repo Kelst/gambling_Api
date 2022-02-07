@@ -102,6 +102,35 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
 
 
             }) 
+            admin.put("/admin/api/trds3f2333/cancelApproveApp/",async(req,res)=>{//bundle=com.example.app
+                const appFind= await App.findOne({bundle:req.body.bundle});
+                User.findOne({userIdTelegram:appFind.user_confirm},async function (err, doc){
+                    if(appFind.sold===true){
+                        res.json({
+                            message:"App sold"
+                        })
+                        return ;
+                    }
+                   
+                   appFind.sold=false;
+                   appFind.visibility_public=true;
+                   appFind.confirm_app=false;
+                   appFind.user_confirm="";
+    
+    
+                    try{
+                     await doc.save();
+                     await appFind.save();
+                     res.json(doc)//доробити повернення 
+                     }
+                     catch(err){
+                         console.log(err);
+                     }
+                   });
+               
+    
+    
+                }) 
             admin.put("/admin/api/trds3f2333/setUrl/",(req,res)=>{
                 App.findOne({bundle:req.body.bundle},async function (err, doc){
                    doc.url=req.body.url;
@@ -300,14 +329,14 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                     }) 
         
 
-                    
+
                                                     admin.get("/admin/api/trds3f2333/getConfirmApp/",async (req,res)=>{
                                                         const app= await App.find({confirm_app:true})
                                                        await res.json(app)
                                                     })
                                                     admin.get("/admin/api/trds3f2333/getActiveApp/",async (req,res)=>{
                                                         const app= await App.find({status:"active"})
-                                                       await res.json(app)
+                                                        await res.json(app)
                                                     })
         
 
