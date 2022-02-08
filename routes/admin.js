@@ -41,9 +41,9 @@ admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
 
 
     })
-    admin.put("/admin/api/trds3f2333/Delete/",(req,res)=>{//&app_id=111
+    admin.put("/admin/api/trds3f2333/deleteAppById/",(req,res)=>{//&app_id=111
         
-      App.findOneAndDelete({bundle:req.body.bundle},async function(err,doc){
+      App.findOneAndDelete({_id:req.body.id},async function(err,doc){
           try{
             res.json(doc)
           }
