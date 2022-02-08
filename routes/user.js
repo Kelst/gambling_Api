@@ -7,6 +7,7 @@ admin.post("/admin/user/api/trds3f2333/addUser/",async(req,res)=>{
     const newUser=new User({
         userName:req.body.userName,
         userIdTelegram:req.body.userIdTelegram,
+        userTelegram_nik:req.body.telegramNick
     })
     try{
         await newUser.save()
@@ -21,6 +22,12 @@ admin.get("/admin/user/api/trds3f2333/getUserApps/:userIdTelegram",async(req,res
 
  const userN= await User.findOne({userIdTelegram:userIdTelegram}).populate("apps")
 res.json(userN.apps)
+})
+admin.get("/admin/user/api/trds3f2333/getshareApps/:userIdTelegram",async(req,res)=>{
+    const userIdTelegram=req.params["userIdTelegram"];
+
+ const userN= await User.findOne({userIdTelegram:userIdTelegram}).populate("share_app")
+res.json(userN.share_app)
 })
 
 admin.get("/admin/user/api/trds3f2333/getUser/:userIdTelegram",async(req,res)=>{

@@ -26,7 +26,7 @@ catch(er){
 })
 //Change App status
 admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
-    App.findOne({id:req.body.app_id},async function (err, doc){
+    App.findOne({_id:req.body.app_id},async function (err, doc){
    if(doc.status==="active"){
        doc.status="ban"
    }else doc.status="active";
@@ -56,7 +56,7 @@ admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
         })
     //change app visibility
 admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
-    App.findOne({id:req.body.app_id},async function (err, doc){
+    App.findOne({_id:req.body.app_id},async function (err, doc){
         doc.visibility_public=!doc.visibility_public;
         try{
          await doc.save();
@@ -149,7 +149,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                  
                     }) 
                     admin.put("/admin/api/trds3f2333/setUrlGooglePlay/",(req,res)=>{
-                        App.findOne({id:req.body.app_id},async function (err, doc){
+                        App.findOne({_id:req.body.app_id},async function (err, doc){
                            doc.google_play_url=req.body.url;
                             try{
                              await doc.save();
@@ -223,7 +223,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
 
 
                     admin.put("/admin/api/trds3f2333/incInstals/",(req,res)=>{
-                        App.findOne({id:req.body.app_id},async function (err, doc){
+                        App.findOne({_id:req.body.app_id},async function (err, doc){
                            doc.installs=+doc.installs+1;
                             try{
                              await doc.save();
@@ -238,7 +238,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                            });
                             }) 
                             admin.put("/admin/api/trds3f2333/cleanInstals/",(req,res)=>{
-                                App.findOne({id:req.body.app_id},async function (err, doc){
+                                App.findOne({_id:req.body.app_id},async function (err, doc){
                                    doc.installs=0;
                                     try{
                                      await doc.save();
@@ -341,7 +341,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                     })
 
                                                     admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{
-                                                        App.findOne({id:req.body.app_id},async function (err, doc){
+                                                        App.findOne({_id:req.body.app_id},async function (err, doc){
                                                            doc.visibility_public=false;
                                                             try{
                                                              await doc.save();
@@ -356,4 +356,57 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                            });
                                                          
                                                             }) 
+
+                                                            admin.put("/admin/api/trds3f2333/shareAppToUser/",async(req,res)=>{//bundle=com.example.app
+                                                                const appFind= await App.findOne({_id:"6201196976dcf5887cf462dd"});
+                                                                let flag=true;
+
+                                                                const user=await User.find()
+                                                                
+
+                                                                for(let i=0;i<user.length;i++){
+                                                                    if(user[i].share_app.filter(el=>req.body.app_id==el).length===0) {
+                                                                    try{
+                                                                   
+                                                                    user[i].share_app.push(appFind);
+                                                                    await user[i].save();}
+                                                                    
+                                                                    catch(err){
+                                                                        console.log(err);
+                                                                        flag=false;
+                                                                    }
+                                                                    
+                                                                }  
+                                                                }
+                                                               
+                                                            res.json({
+                                                                        flag:flag
+                                                                    })
+                                                               
+                                                     
+                                                    
+                                                                }) 
+                                                                admin.put("/admin/api/trds3f2333/clearShareApp/",async (req,res)=>{
+                                                                    let flag=true;
+                                                                    const user=await User.find()
+                                                                    for(let i=0;i<user.length;i++){ 
+                                                                        try{
+                                                                
+                                                                        user[i].share_app=[];
+                                                                        await user[i].save();
+                                                                        }
+                                                                        catch(err){
+                                                                            console.log(err);
+                                                                            flag=false
+                                                                        }
+                                                                        
+                                                                
+                                                                    }
+                                                                    res.json({
+                                                                        flag:flag
+                                                                    })
+                                                                   
+                                                                        }) 
+            
+
 module.exports=admin
