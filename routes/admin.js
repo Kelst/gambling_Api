@@ -359,7 +359,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                             }) 
 
                                                             admin.put("/admin/api/trds3f2333/shareAppToUser/",async(req,res)=>{//bundle=com.example.app
-                                                                const appFind= await App.findOne({_id:"6201196976dcf5887cf462dd"});
+                                                                const appFind= await App.findOne({_id:req.body.app_id});
                                                                 let flag=true;
 
                                                                 const user=await User.find()
@@ -408,6 +408,23 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                                     })
                                                                    
                                                                         }) 
+
+                                                                        admin.put("/admin/api/trds3f2333/imageLink/",(req,res)=>{
+                                                                            App.findOne({bundle:req.body.id},async function (err, doc){
+                                                                               doc.image_link=req.body.image_link;
+                                                                                try{
+                                                                                 await doc.save();
+                                                                                 res.json(doc)
+                                                                                 }
+                                                                                 catch(err){
+                                                                                     console.log(err);
+                                                                                     res.json({
+                                                                                         message:"app dont found"
+                                                                                     })
+                                                                                 }
+                                                                               });
+                                                                             
+                                                                                }) 
             
 
 module.exports=admin
