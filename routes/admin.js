@@ -408,8 +408,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                                     })
                                                                    
                                                                         }) 
-                                                                        admin.put("/admin/api/trds3f2333/clearShareAppbyId/:userIdTelegram",async (req,res)=>{
-                                                                            const userIdTelegram=req.params["userIdTelegram"];
+                                                                        admin.put("/admin/api/trds3f2333/clearShareAppbyId/",async (req,res)=>{
+                                                                            const userIdTelegram=req.body.app_id;
                                                                             const user=await User.findOne({userIdTelegram:userIdTelegram})
                                                                             user.share_app=[];
                                                                             try{
