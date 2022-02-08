@@ -87,6 +87,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                appFind.sold=true;
                appFind.visibility_public=false;
                appFind.confirm_app=false;
+          
 
 
                 try{
@@ -338,6 +339,21 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         const app= await App.find({status:"active",sold:false,confirm_app:false})
                                                         await res.json(app)
                                                     })
+
+                                                    admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{//&app_id=111
+                                                        App.findOne({id:req.body.app_id},async function (err, doc){
+                                                            doc.visibility_public=false;
+                                                            try{
+                                                             await doc.save();
+                                                             res.json(doc)
+                                                             }
+                                                             catch(err){
+                                                                 console.log(err);
+                                                                 res.json({
+                                                                     message:"app dont found"
+                                                                 })
+                                                             }
+                                                           });
         
 
 module.exports=admin
