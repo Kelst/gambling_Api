@@ -336,13 +336,14 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                        await res.json(app)
                                                     })
                                                     admin.get("/admin/api/trds3f2333/getActiveApp/",async (req,res)=>{
-                                                        const app= await App.find({status:"active",sold:false,confirm_app:false})
+                                                        const app= await App.find({status:"active",sold:false,confirm_app:false,visibility_public:true})
                                                         await res.json(app)
                                                     })
 
                                                     admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{
                                                         App.findOne({_id:req.body.app_id},async function (err, doc){
                                                            doc.visibility_public=false;
+                                                           
                                                             try{
                                                              await doc.save();
                                                              res.json(doc)
