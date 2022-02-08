@@ -340,9 +340,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         await res.json(app)
                                                     })
 
-                                                    admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{//&app_id=111
+                                                    admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{
                                                         App.findOne({id:req.body.app_id},async function (err, doc){
-                                                            doc.visibility_public=false;
+                                                           doc.visibility_public=false;
                                                             try{
                                                              await doc.save();
                                                              res.json(doc)
@@ -350,10 +350,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                              catch(err){
                                                                  console.log(err);
                                                                  res.json({
-                                                                     message:"app dont found"
+                                                                     message:"app do not found"
                                                                  })
                                                              }
                                                            });
-        
-
+                                                         
+                                                            }) 
 module.exports=admin
