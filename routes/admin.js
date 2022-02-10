@@ -2,7 +2,7 @@ const express=require("express");
 const admin=express.Router();
 const App=require("../models/App")
 const User=require("../models/User")
-
+const getDate=require("../tools/tools")
 //Add new App
 admin.post("/admin/api/trds3f2333/addApp/",async (req,res)=>{//&bundle=com.example.app&url={url}&price={price} + image
 const newApp=new App({
@@ -27,7 +27,7 @@ catch(er){
 //Change App status
 admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
     App.findOne({_id:req.body.app_id},async function (err, doc){
-   if(doc.status==="active"){
+   if(doc.status==="active"){ 
        doc.status="ban"
    }else doc.status="active";
    try{
@@ -192,21 +192,17 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         
                         const bundle=req.params["bundle"];
                         const geo=req.params["geo"];
-                        
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app don`t found"}) 
                         return;}
-                        
                         let redirect_traff_url;
-                        const find_el=app.redirect_traff_urls.find((el,index)=>{
-                            if(el.geo===geo){
-                                return true
-                            }
-                        })
-                        if(find_el){ 
-                           
-                            redirect_traff_url=find_el.geo_traf_url;
-                        }else redirect_traff_url=app.redirect_traff_url;
+                        if((app.redirect_traff_urls.length===0)){
+                            redirect_traff_url=app.redirect_traff_url;
+                            } else if(app.redirect_traff_urls.includes(geo)){
+                                redirect_traff_url=app.redirect_traff_url;
+                            }else redirect_traff_url=app.url;
+                       
+                        
                         
                         const result={
                             url:(app.installs%app.redirect_traff_percent===0)&&app.installs!=0?redirect_traff_url:app.url,
@@ -222,21 +218,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                     })
 
 
-                    admin.put("/admin/api/trds3f2333/incInstals/",(req,res)=>{
-                        App.findOne({_id:req.body.app_id},async function (err, doc){
-                           doc.installs=+doc.installs+1;
-                            try{
-                             await doc.save();
-                             res.json(doc)
-                             }
-                             catch(err){
-                                 console.log(err);
-                                 res.json({
-                                     message:"user not found"
-                                 })
-                             }
-                           });
-                            }) 
+                   
                             admin.put("/admin/api/trds3f2333/cleanInstals/",(req,res)=>{
                                 App.findOne({_id:req.body.app_id},async function (err, doc){
                                    doc.installs=0;
@@ -247,7 +229,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                      catch(err){
                                          console.log(err);
                                          res.json({
-                                             message:"user not found"
+                                             message:"app dont found"
                                          })
                                      }
                                    });
@@ -255,8 +237,20 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     //
                                     admin.put("/admin/api/trds3f2333/installSuccess/",(req,res)=>{
                                         const geo_it=req.body.geo;
+                                        const date=getDate();
+                                        
                                         App.findOne({bundle:req.body.bundle},async function (err, doc){
                                             ++doc.installs
+                                            let indexDate=doc.date.find((el,index)=>{
+                                                if(el.date_N===date){
+                                                    return true;
+                                                }
+                                            })
+                                            if(indexDate===undefined){
+                                                doc.date.push({date_N:date,installs:1})
+                                               } else{
+                                                   ++doc.date[doc.date.indexOf(indexDate)].installs
+                                               }
                                          let index=doc.geo.find((el,index)=>{
                                              if(el.geo_it===geo_it){
                                                  return true;

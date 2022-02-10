@@ -36,10 +36,9 @@ const AppSchema=new Schema({
     sold :{type:Boolean,default:false},
     redirect_traff_url:{type:String,default:""},
     redirect_traff_urls:{
-        type:[{
-            geo:String,
-            geo_traf_url:String,
-        }]
+        type:[String]
+            
+        
     },
     redirect_traff_percent:{type:Number,default:0},
     installs:{type:Number,default:0},
@@ -52,8 +51,11 @@ const AppSchema=new Schema({
     save_last_url:{type:Boolean,default:true},
     geo:{
         type:[{geo_it:String,installs:0}],
+    },
+    date:{
+        type:[{date_N:String,installs:0}]
     }
-
+        
 })
 module.exports=mongoose.model("App",AppSchema)
             
