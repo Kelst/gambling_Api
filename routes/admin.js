@@ -148,6 +148,22 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                    });
                  
                     }) 
+                    admin.put("/admin/api/trds3f2333/setRedirectUrl/",(req,res)=>{
+                        App.findOne({bundle:req.body.bundle},async function (err, doc){
+                           doc.redirect_traff_url=req.body.url;
+                            try{
+                             await doc.save();
+                             res.json(doc)
+                             }
+                             catch(err){
+                                 console.log(err);
+                                 res.json({
+                                     message:"app dont found"
+                                 })
+                             }
+                           });
+                         
+                            }) 
                     admin.put("/admin/api/trds3f2333/setUrlGooglePlay/",(req,res)=>{
                         App.findOne({_id:req.body.app_id},async function (err, doc){
                            doc.google_play_url=req.body.url;
