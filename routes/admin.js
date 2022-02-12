@@ -71,10 +71,26 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
        });
      
         })   
+        admin.put("/admin/api/trds3f2333/setUserConfirmApp/",(req,res)=>{//&app_id=111
+            App.findOne({bundle:req.body.bundle},async function (err, doc){
+               doc.user_confirm=req.body.confirmId;
+                try{
+                 await doc.save();
+                 res.json(doc)
+                 }
+                 catch(err){
+                     console.log(err);
+                     res.json({
+                         message:"app dont found"
+                     })
+                 }
+               });
+             
+                })  
         //approve App userIdTelegram
           admin.put("/admin/api/trds3f2333/approveApp/",async(req,res)=>{//bundle=com.example.app
             const appFind= await App.findOne({bundle:req.body.bundle});
-           
+            
             User.findOne({userIdTelegram:appFind.user_confirm},async function (err, doc){
                 if(appFind.sold===true){
                     res.json({
