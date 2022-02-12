@@ -314,7 +314,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
 
                                             try{
                                              await doc.save();
-                                             res.json(doc)
+                                             res.json({
+                                                 message:true
+                                             })
                                              }
                                              catch(err){
                                                  console.log(err);
