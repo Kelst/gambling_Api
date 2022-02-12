@@ -24,7 +24,7 @@ admin.get("/admin/user/api/trds3f2333/getUserApps/:userIdTelegram",async(req,res
 res.json(userN.apps)
 })
 admin.get("/admin/user/api/trds3f2333/findUser/:userName",async(req,res)=>{
-    const userName=req.params["userName"];
+    const userName=req.params["userName"].split("_").join(" ");
  let userN= await User.findOne({userName:userName})
     res.json(userN)
 })
