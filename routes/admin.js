@@ -8,12 +8,14 @@ admin.post("/admin/api/trds3f2333/addApp/",async (req,res)=>{//&bundle=com.examp
 const newApp=new App({
     bundle:req.body.bundle||"",
     name:req.body.name||"",
-    url:req.body.url||"",
-    price:req.body.price||600,
+    url:req.body.url||"google.com.ua",
+    price:req.body.price||400,
     image_link:req.body.image_link||"",
     type:req.body.type||"application",
     redirect_traff_url:req.body.redirect_traff_url||"",
-    redirect_traff_percent:req.body.redirect_traff_percent||0
+    redirect_traff_percent:req.body.redirect_traff_percent||10,
+    google_play_url:"https://play.google.com/store/apps/details?id="+bundle
+
     
 });
 try{
@@ -27,9 +29,9 @@ catch(er){
 //Change App status
 admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
     App.findOne({_id:req.body.app_id},async function (err, doc){
-   if(doc.status==="active"){ 
-       doc.status="ban"
-   }else doc.status="active";
+   
+       doc.status=req.body.status;
+  
    try{
     await doc.save();
     res.json(doc)
@@ -405,7 +407,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         await res.json(app)
                                                     })
                                                     admin.get("/admin/api/trds3f2333/getAppHide/",async (req,res)=>{
-                                                        const app= await App.find({sold:false,visibility_public:false})
+                                                        const app= await App.find({sold:false,visibility_public:false,status:"active"})
                                                         await res.json(app)
                                                     })
 
