@@ -410,6 +410,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         const app= await App.find({sold:false,visibility_public:false,status:"active"})
                                                         await res.json(app)
                                                     })
+                                                    admin.get("/admin/api/trds3f2333/getBanApp/",async (req,res)=>{
+                                                        const app= await App.find({status:"ban"})
+                                                        await res.json(app)
+                                                    })
 
 
                                                     admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{
