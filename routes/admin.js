@@ -404,6 +404,11 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         const app= await App.find({sold:true,visibility_public:false})
                                                         await res.json(app)
                                                     })
+                                                    admin.get("/admin/api/trds3f2333/getAppHide/",async (req,res)=>{
+                                                        const app= await App.find({sold:false,visibility_public:false})
+                                                        await res.json(app)
+                                                    })
+
 
                                                     admin.put("/admin/api/trds3f2333/hideApp/",(req,res)=>{
                                                         App.findOne({_id:req.body.app_id},async function (err, doc){
