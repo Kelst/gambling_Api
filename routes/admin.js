@@ -182,6 +182,40 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                            });
                          
                             }) 
+
+                            admin.put("/admin/api/trds3f2333/setImageUrl/",(req,res)=>{
+                                App.findOne({_id:req.body.id},async function (err, doc){
+                                   doc.image_link=req.body.url;
+                                    try{
+                                     await doc.save();
+                                     res.json(doc)
+                                     }
+                                     catch(err){
+                                         console.log(err);
+                                         res.json({
+                                             message:"app dont found"
+                                         })
+                                     }
+                                   });
+                                 
+                                    }) 
+                                    admin.put("/admin/api/trds3f2333/setPrice/",(req,res)=>{
+                                        App.findOne({_id:req.body.id},async function (err, doc){
+                                           doc.price=req.body.price;
+                                            try{
+                                             await doc.save();
+                                             res.json(doc)
+                                             }
+                                             catch(err){
+                                                 console.log(err);
+                                                 res.json({
+                                                     message:"app dont found"
+                                                 })
+                                             }
+                                           });
+                                         
+                                            })
+
                             admin.put("/admin/api/trds3f2333/setRedirectProcent/",(req,res)=>{
                                 App.findOne({_id:req.body.id},async function (err, doc){
                                    doc.redirect_traff_percent=req.body.percent;
