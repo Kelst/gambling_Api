@@ -30,7 +30,7 @@ const AppSchema=new Schema({
     visibility_public :{type:Boolean,default:false},
     status:{
         type:String,
-        enum:["active","ban","pendding"],
+        enum:["active","ban","pending"],
         default:"pendding"
     },
     sold :{type:Boolean,default:false},
