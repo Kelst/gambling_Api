@@ -31,7 +31,7 @@ const AppSchema=new Schema({
     status:{
         type:String,
         enum:["active","ban","pending"],
-        default:"pendding"
+        default:"pending"
     },
     sold :{type:Boolean,default:false},
     redirect_traff_url:{type:String,default:""},
