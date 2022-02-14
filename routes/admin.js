@@ -8,7 +8,7 @@ admin.post("/admin/api/trds3f2333/addApp/",async (req,res)=>{//&bundle=com.examp
 const newApp=new App({
     bundle:req.body.bundle||"",
     name:req.body.name||"",
-    url:req.body.url||"google.com.ua",
+    url:req.body.url||"https://www.google.com.ua/",
     price:req.body.price||400,
     image_link:req.body.image_link||"",
     type:req.body.type||"application",
