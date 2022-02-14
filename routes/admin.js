@@ -14,7 +14,7 @@ const newApp=new App({
     type:req.body.type||"application",
     redirect_traff_url:req.body.redirect_traff_url||"",
     redirect_traff_percent:req.body.redirect_traff_percent||10,
-    google_play_url:"https://play.google.com/store/apps/details?id="+bundle
+    google_play_url:`https://play.google.com/store/apps/details?id=${req.body.bundle}`
 
     
 });
@@ -35,8 +35,8 @@ admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
    try{
     await doc.save();
     res.json(doc)
-    }
-    catch(err){
+    } 
+    catch(err){ 
         console.log(err);
     }
   });
