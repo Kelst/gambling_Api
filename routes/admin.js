@@ -257,8 +257,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                     })
                     admin.get("/admin/api/trds3f2333/getInfo/",async (req,res)=>{
                         
-                        const bundle=request.query.bundle
-                        const geo=request.query.geo
+                        const bundle=req.query.bundle
+                        const geo=req.query?.geo
+                        console.log(geo);
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app don`t found"}) 
                         return;}
