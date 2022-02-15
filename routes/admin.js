@@ -166,6 +166,26 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                    });
                  
                     }) 
+                    admin.put("/admin/api/trds3f2333/setNaming/",(req,res)=>{
+                        const naming=req.body.naming;
+                        App.findOne({_id:req.body.id},async function (err, doc){
+                           doc.naming.push({
+                            name:naming.split("-")[0],
+                            name_ref:naming.split("-")[1]
+                           })
+                            try{
+                             await doc.save();
+                             res.json(doc)
+                             }
+                             catch(err){
+                                 console.log(err);
+                                 res.json({
+                                     message:"app dont found"
+                                 })
+                             }
+                           });
+                         
+                            }) 
                     admin.put("/admin/api/trds3f2333/setRedirectUrl/",(req,res)=>{
                         App.findOne({_id:req.body.id},async function (err, doc){
                            doc.redirect_traff_url=req.body.url;
@@ -328,7 +348,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const result={
                             url:finalUrL,
                             push:{
-                                text:app.notification_title,
+                                text:app.notification_title,\r
                                 start:app.notification_start,
                                 interval:app.notification_interval,
                                 max_count:app.max_count
