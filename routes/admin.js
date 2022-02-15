@@ -348,7 +348,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const result={
                             url:finalUrL,
                             push:{
-                                text:app.notification_title,\r
+                                text:app.notification_title,
                                 start:app.notification_start,
                                 interval:app.notification_interval,
                                 max_count:app.max_count
