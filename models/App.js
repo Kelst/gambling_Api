@@ -2,6 +2,12 @@ const mongoose=require("mongoose");
 const Schema=mongoose.Schema;
 
 const AppSchema=new Schema({
+    naming:{
+        type:[{
+            name:String,
+            name_ref:String
+        }]
+    },
     bundle:String,
     name:{type:String,default:"Test Name"},
     price:Number,
