@@ -489,6 +489,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                             admin.put("/admin/api/trds3f2333/showApp/",(req,res)=>{
                                                                 App.findOne({_id:req.body.app_id},async function (err, doc){
                                                                    doc.visibility_public=true;
+                                                                   doc.status="active"
                                                                    
                                                                     try{
                                                                      await doc.save();
