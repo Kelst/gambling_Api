@@ -151,7 +151,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
     
                 }) 
             admin.put("/admin/api/trds3f2333/setUrl/",(req,res)=>{
-                App.findOne({bundle:req.body.bundle},async function (err, doc){
+                App.findOne({_id:req.body.id},async function (err, doc){
                    doc.url=req.body.url;
                     try{
                      await doc.save();
