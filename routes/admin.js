@@ -314,9 +314,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const bundle=req.query.bundle;
                         const geo=req.query?.geo;
                         const naming=req.query?.naming;
-                        console.log(!!naming);
-                        console.log(naming);
-                        let namingUrl=""
+                       
+                       
                         let finalUrL="";
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app don`t found"}) 
