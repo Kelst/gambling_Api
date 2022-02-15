@@ -315,45 +315,71 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const geo=req.query?.geo;
                         const naming=req.query?.naming;
                        
-                       
+                      
+
                         let finalUrL="";
                         const app= await App.findOne({bundle:bundle})
                         if(app===null) {res.json({message:"app don`t found"}) 
                         return;}
                         let redirect_traff_url;
+                        console.log("Start");
                         if((app.redirect_traff_urls.length===0)){
                             redirect_traff_url=app.redirect_traff_url;
                             } else if(app.redirect_traff_urls.includes(geo)){
                                 redirect_traff_url=app.redirect_traff_url;
                             }else redirect_traff_url=app.url;
 
-
+                            console.log((app.naming.length>0)&&(naming!=undefined));
+                            
                             if((app.naming.length>0)&&(naming!=undefined)){
+                                console.log("Start2");
 
                                 let namingElement=app.naming.filter(el=>el.name===naming);
                                 if(namingElement.length>0){
-        
+                                    console.log("d");
                                     finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:namingElement[0].name_ref;
                                     
                                 }else{
-                                    finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:app.url
+                                    finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)?redirect_traff_url:app.url
                                 }
+                            }else{
+                                console.log("Start3");
+
+                                finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)?redirect_traff_url:app.url
+                               
                             }
-                //app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:app.url,
+               
                             
 
+                            let result;
+                            console.log((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0));
+                            if((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)){
+                                result={
+                                    url:finalUrL,
+                                    url_invisible:app.url,
 
+                                    push:{
+                                        text:app.notification_title,
+                                        start:app.notification_start,
+                                        interval:app.notification_interval,
+                                        max_count:app.max_count
+                                    },
+                                    save_last_url:app.save_last_url
+                                }
+                            }else{
+                                result={
+                                    url:finalUrL,
+                                    push:{
+                                        text:app.notification_title,
+                                        start:app.notification_start,
+                                        interval:app.notification_interval,
+                                        max_count:app.max_count
+                                    },
+                                    save_last_url:app.save_last_url
+                                }
+                            }
 
-                        const result={
-                            url:finalUrL,
-                            push:{
-                                text:app.notification_title,
-                                start:app.notification_start,
-                                interval:app.notification_interval,
-                                max_count:app.max_count
-                            },
-                            save_last_url:app.save_last_url
-                        }
+                        
                         res.json(result)
                     })
 
