@@ -60,6 +60,10 @@ const AppSchema=new Schema({
     },
     date:{
         type:[{date_N:String,installs:0}]
+    },
+    moderate_date:{
+        type:String,
+        default:""
     }
         
 })
