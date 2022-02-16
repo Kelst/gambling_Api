@@ -517,6 +517,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         const app= await App.find({status:"pending"})
                                                         await res.json(app)
                                                     })
+                                                    admin.get("/admin/api/trds3f2333/getModerateApp/",async (req,res)=>{
+                                                        const app= await App.find({status:"moderating"})
+                                                        await res.json(app)
+                                                    })
                                                     admin.get("/admin/api/trds3f2333/StateApp/",async (req,res)=>{
                                                         const app= await App.find({});
                                                         const state={
