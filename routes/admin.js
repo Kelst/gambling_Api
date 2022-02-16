@@ -525,7 +525,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                             inuseApp:[],
                                                             hideApp:[],
                                                             banApp:[],
-                                                            pendingApp:[]
+                                                            pendingApp:[],
+                                                            moderateApp:[]
                                                         }
                                                         try{
                                                         state.confirmApp=app.filter(el=>el.confirm_app===true)||[];
@@ -534,6 +535,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                                         state.hideApp=app.filter(el=>el.sold===false&&el.status==="active"&&el.visibility_public===false)||[];
                                                         state.banApp=app.filter(el=>el.status==="ban")||[];
                                                         state.pendingApp=app.filter(el=>el.status==="pending")||[];
+                                                        state.moderateApp=app.filter(el=>el.status==="moderating")||[];
                                                         }
                                                         catch(e){
                                                             console.log(e);
