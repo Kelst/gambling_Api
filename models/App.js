@@ -27,7 +27,7 @@ const AppSchema=new Schema({
     url:{type:String,default:""},
     type:{
         type:String,
-        enum:["gambling","crypto","dating","application"],
+        enum:["gambling","crypto","dating","application","betting","finances","subscriptions","nutra"],
         default:"application"
     },
     google_play_url:{type:String,default:""},
@@ -36,7 +36,7 @@ const AppSchema=new Schema({
     visibility_public :{type:Boolean,default:false},
     status:{
         type:String,
-        enum:["active","ban","pending"],
+        enum:["active","ban","pending","moderating"],
         default:"pending"
     },
     sold :{type:Boolean,default:false},
