@@ -256,7 +256,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     })
                                     admin.put("/admin/api/trds3f2333/setRedirectGeo/",(req,res)=>{
                                         App.findOne({_id:req.body.id},async function (err, doc){
-                                           doc.redirect_traff_urls=req.body.geo?.split(" ");
+
+                                           doc.redirect_traff_urls=req.body.geo==""?[]:req.body.geo.split(",")
                                             try{
                                              await doc.save();
                                              res.json(doc)
