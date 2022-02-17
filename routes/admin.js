@@ -102,7 +102,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                 }
                 const date=new Date();
                doc.apps=[...doc.apps,appFind._id];
-                appFind.dateConfirm=getDate()+" "+ date.getHours+":"+date.getMinutes()
+                appFind.dateConfirm=getDate()+" "+ date.getHours()+":"+date.getMinutes()
                appFind.sold=true;
                appFind.visibility_public=false;
                appFind.confirm_app=false;
