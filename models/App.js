@@ -52,7 +52,7 @@ const AppSchema=new Schema({
     notification_title:{type:String,default:"Title"},
     notification_text:{type:String,default:"Text"},
     notification_interval :{type:Number,default:600},
-    notification_start :{type:Number,default:600},
+    notification_start :{type:Number,default:1},
     max_count:{type:Number,default:10},
     save_last_url:{type:Boolean,default:true},
     geo:{
