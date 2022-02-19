@@ -362,7 +362,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                             app.geo.push({geo_it:geo,installs:1}) 
                            } else{
                                ++app.geo[app.geo.indexOf(index)].installs
-                           }
+                           } 
+                           let a;
 
                             try{
                              await app.save();
