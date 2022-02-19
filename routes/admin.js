@@ -178,7 +178,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                              await doc.save();
                              res.json(doc)
                              }
-                             catch(err){
+                             catch(err){ 
                                  console.log(err);
                                  res.json({
                                      message:"app dont found"
@@ -331,56 +331,53 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         res.json(result)
                     })
                     admin.get("/admin/api/trds3f2333/getInfo/",async (req,res)=>{
-                        
+                        let result={}
                         const bundle=req.query.bundle;
                         const geo=req.query?.geo;
                         const naming=req.query?.naming;
-                       
-                      
-
                         let finalUrL="";
-                        
                         const app= await App.findOne({bundle:bundle})
                         const redirectFinalProcent=Math.round(100/app.redirect_traff_percent);
-                        if(app===null) {res.json({message:"app don`t found"}) 
-                        return;}
-                        let redirect_traff_url;
-                        console.log("Start");
-                        if((app.redirect_traff_urls.length===0)){
-                            redirect_traff_url=app.redirect_traff_url;
-                            } else if(app.redirect_traff_urls.includes(geo)){
-                                redirect_traff_url=app.redirect_traff_url;
-                            }else redirect_traff_url=app.url;
-
-                            console.log((app.naming.length>0)&&(naming!=undefined));
-                            
-                            if((app.naming.length>0)&&(naming!=undefined)){
-                                console.log("Start2");
-
-                                let namingElement=app.naming.filter(el=>el.name===naming);
-                                if(namingElement.length>0){
-                                    console.log("d");
-                                    finalUrL=(app.installs%redirectFinalProcent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:namingElement[0].name_ref;
-                                    
-                                }else{
-                                    finalUrL=(app.installs%redirectFinalProcent===0)&&(app.installs!=0)?redirect_traff_url:app.url
+                       
+                        if(app.installs%redirectFinalProcent===0&&app.redirect_traff_percent!=0&&app.redirect_traff_url!=""){
+                            const date=getDate();
+                            ++app.installs
+                            let indexDate=app.date.find((el,index)=>{
+                                if(el.date_N===date){
+                                    return true;
                                 }
-                            }else{
-                                console.log("Start3");
+                            })
+                            if(indexDate===undefined){
+                                app.date.push({date_N:date,installs:1})
+                               } else{
+                                   ++app.date[app.date.indexOf(indexDate)].installs
+                               }
+                         let index=app.geo.find((el,index)=>{
+                             if(el.geo_it===geo){
+                                 return true;
+                             }
 
-                                finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)?redirect_traff_url:app.url
-                               
-                            }
-               
-                            
+                            }); 
+                           if(index===undefined){
+                            app.geo.push({geo_it:geo,installs:1}) 
+                           } else{
+                               ++app.geo[app.geo.indexOf(index)].installs
+                           }
 
-                            let result;
-                            // console.log((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0));
-                            if((app.installs%redirectFinalProcent===0)&&(app.installs!=0)){
+                            try{
+                             await app.save();
+                             
+                             }
+                             catch(err){
+                                 console.log(err);
+                                
+                             }
+                    
+                            if(app.redirect_traff_urls.includes(geo)||app.redirect_traff_urls.length===0){
                                 result={
-                                    url:finalUrL,
+                                    url:app.redirect_traff_url,
                                     url_invisible:app.url,
-
+        
                                     push:{
                                         text:app.notification_title,
                                         start:app.notification_start,
@@ -389,9 +386,13 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     },
                                     save_last_url:app.save_last_url
                                 }
+                                res.json(result)
+                            return
+
                             }else{
+                                
                                 result={
-                                    url:finalUrL,
+                                    url:app.url,
                                     push:{
                                         text:app.notification_title,
                                         start:app.notification_start,
@@ -399,11 +400,123 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                         max_count:app.max_count
                                     },
                                     save_last_url:app.save_last_url
+                                }
+                                res.json(result)
+                            return
+                            }
+                            
+
+                           
+                        }else{                            
+
+                            if(app.naming.length===0){
+                                result={
+                                    url:app.url,
+                                    push:{
+                                        text:app.notification_title,
+                                        start:app.notification_start,
+                                        interval:app.notification_interval,
+                                        max_count:app.max_count
+                                    },
+                                    save_last_url:app.save_last_url
+                                }
+                                res.json(result)
+                            return
+                            }else {
+                                const namingCurrent=app.naming.filter(el=>el.name==naming);
+                                console.log(namingCurrent);
+                                if(namingCurrent.length!=0){
+                                    const date=getDate();
+                                    ++app.installs
+                                    let indexDate=app.date.find((el,index)=>{
+                                        if(el.date_N===date){
+                                            return true;
+                                        }
+                                    })
+                                    if(indexDate===undefined){
+                                        app.date.push({date_N:date,installs:1})
+                                       } else{
+                                           ++app.date[app.date.indexOf(indexDate)].installs
+                                       }
+                                 let index=app.geo.find((el,index)=>{
+                                     if(el.geo_it===geo){
+                                         return true;
+                                     }
+    
+                                    }); 
+                                   if(index===undefined){
+                                    app.geo.push({geo_it:geo,installs:1}) 
+                                   } else{
+                                       ++app.geo[app.geo.indexOf(index)].installs
+                                   }
+    
+                                    try{
+                                     await app.save();
+                                     
+                                     }
+                                     catch(err){
+                                         console.log(err);
+                                        
+                                     }
+                            
+                                    result={
+                                        url:namingCurrent[0].name_ref,
+                                        push:{
+                                            text:app.notification_title,
+                                            start:app.notification_start,
+                                            interval:app.notification_interval,
+                                            max_count:app.max_count
+                                        },
+                                        save_last_url:app.save_last_url
+                                    }
+                                    res.json(result)
+                                return
+                                }else {
+                                    result={
+                                        url:"",
+                                        push:{
+                                            text:app.notification_title,
+                                            start:app.notification_start,
+                                            interval:app.notification_interval,
+                                            max_count:app.max_count
+                                        },
+                                        save_last_url:app.save_last_url
+                                    }
+                                    res.json(result)
+                                return  
                                 }
                             }
 
+
+                        }
+
+                        // if(app.naming.length===0){
+                        //     result={
+                        //         url:app.url,
+                        //         push:{
+                        //             text:app.notification_title,
+                        //             start:app.notification_start,
+                        //             interval:app.notification_interval,
+                        //             max_count:app.max_count
+                        //         },
+                        //         save_last_url:app.save_last_url
+                        //     }
+                        //     res.json(result)
+                        // return
+                        // }
+                        // result={
+                        //     url:finalUrL,
+                        //     url_invisible:app.url,
+
+                        //     push:{
+                        //         text:app.notification_title,
+                        //         start:app.notification_start,
+                        //         interval:app.notification_interval,
+                        //         max_count:app.max_count
+                        //     },
+                        //     save_last_url:app.save_last_url
+                        // }
                         
-                        res.json(result)
                     })
 
 
