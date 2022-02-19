@@ -30,7 +30,7 @@ catch(er){
 admin.put("/admin/api/trds3f2333/changeAppStatus/",(req,res)=>{//&app_id=111
     App.findOne({_id:req.body.app_id},async function (err, doc){
    
-       doc.status=req.body.status;
+       doc.status=req.body.status; 
   
    try{
     await doc.save();
@@ -276,7 +276,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
         
                                                    doc.redirect_traff_urls=[];
                                                    doc.redirect_traff_url="";
-                                                   
+
                                                     try{
                                                      await doc.save();
                                                      res.json(doc)
@@ -339,7 +339,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                       
 
                         let finalUrL="";
+                        
                         const app= await App.findOne({bundle:bundle})
+                        const redirectFinalProcent=Math.round(100/app.redirect_traff_percent);
                         if(app===null) {res.json({message:"app don`t found"}) 
                         return;}
                         let redirect_traff_url;
@@ -358,10 +360,10 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                 let namingElement=app.naming.filter(el=>el.name===naming);
                                 if(namingElement.length>0){
                                     console.log("d");
-                                    finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:namingElement[0].name_ref;
+                                    finalUrL=(app.installs%redirectFinalProcent===0)&&(app.installs!=0)&&(app.redirect_traff_url!="")?redirect_traff_url:namingElement[0].name_ref;
                                     
                                 }else{
-                                    finalUrL=(app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)?redirect_traff_url:app.url
+                                    finalUrL=(app.installs%redirectFinalProcent===0)&&(app.installs!=0)?redirect_traff_url:app.url
                                 }
                             }else{
                                 console.log("Start3");
@@ -373,8 +375,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                             
 
                             let result;
-                            console.log((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0));
-                            if((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0)){
+                            // console.log((app.installs%app.redirect_traff_percent===0)&&(app.installs!=0));
+                            if((app.installs%redirectFinalProcent===0)&&(app.installs!=0)){
                                 result={
                                     url:finalUrL,
                                     url_invisible:app.url,
