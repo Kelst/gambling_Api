@@ -13,7 +13,7 @@ const newApp=new App({
     image_link:req.body.image_link||"",
     type:req.body.type||"application",
     redirect_traff_url:req.body.redirect_traff_url||"",
-    redirect_traff_percent:req.body.redirect_traff_percent||10,
+    redirect_traff_percent:req.body.redirect_traff_percent||0,
     google_play_url:`https://play.google.com/store/apps/details?id=${req.body.bundle}`
 
     
@@ -335,44 +335,47 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const bundle=req.query.bundle;
                         const geo=req.query?.geo;
                         const naming=req.query?.naming;
+                        const incInstall=async()=>{
+                            const date=getDate();
+                                    ++app.installs
+                                    let indexDate=app.date.find((el,index)=>{
+                                        if(el.date_N===date){
+                                            return true;
+                                        }
+                                    })
+                                    if(indexDate===undefined){
+                                        app.date.push({date_N:date,installs:1})
+                                       } else{
+                                           ++app.date[app.date.indexOf(indexDate)].installs
+                                       }
+                                 let index=app.geo.find((el,index)=>{
+                                     if(el.geo_it===geo){
+                                         return true;
+                                     }
+    
+                                    }); 
+                                   if(index===undefined){
+                                    app.geo.push({geo_it:geo,installs:1}) 
+                                   } else{
+                                       ++app.geo[app.geo.indexOf(index)].installs
+                                   }
+    
+                                    try{
+                                     await app.save();
+                                     
+                                     }
+                                     catch(err){
+                                         console.log(err);
+                                        
+                                     }
+                        }
                         let finalUrL="";
                         const app= await App.findOne({bundle:bundle})
                         const redirectFinalProcent=Math.round(100/app.redirect_traff_percent);
                        
                         if(app.installs%redirectFinalProcent===0&&app.redirect_traff_percent!=0&&app.redirect_traff_url!=""){
                             const date=getDate();
-                            ++app.installs
-                            let indexDate=app.date.find((el,index)=>{
-                                if(el.date_N===date){
-                                    return true;
-                                }
-                            })
-                            if(indexDate===undefined){
-                                app.date.push({date_N:date,installs:1})
-                               } else{
-                                   ++app.date[app.date.indexOf(indexDate)].installs
-                               }
-                         let index=app.geo.find((el,index)=>{
-                             if(el.geo_it===geo){
-                                 return true;
-                             }
-
-                            }); 
-                           if(index===undefined){
-                            app.geo.push({geo_it:geo,installs:1}) 
-                           } else{
-                               ++app.geo[app.geo.indexOf(index)].installs
-                           } 
-                           let a;
-
-                            try{
-                             await app.save();
-                             
-                             }
-                             catch(err){
-                                 console.log(err);
-                                
-                             }
+                            incInstall()
                     
                             if(app.redirect_traff_urls.includes(geo)||app.redirect_traff_urls.length===0){
                                 result={
@@ -411,6 +414,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         }else{                            
 
                             if(app.naming.length===0){
+                                incInstall()
                                 result={
                                     url:app.url,
                                     push:{
@@ -427,38 +431,8 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                 const namingCurrent=app.naming.filter(el=>el.name==naming);
                                 console.log(namingCurrent);
                                 if(namingCurrent.length!=0){
-                                    const date=getDate();
-                                    ++app.installs
-                                    let indexDate=app.date.find((el,index)=>{
-                                        if(el.date_N===date){
-                                            return true;
-                                        }
-                                    })
-                                    if(indexDate===undefined){
-                                        app.date.push({date_N:date,installs:1})
-                                       } else{
-                                           ++app.date[app.date.indexOf(indexDate)].installs
-                                       }
-                                 let index=app.geo.find((el,index)=>{
-                                     if(el.geo_it===geo){
-                                         return true;
-                                     }
-    
-                                    }); 
-                                   if(index===undefined){
-                                    app.geo.push({geo_it:geo,installs:1}) 
-                                   } else{
-                                       ++app.geo[app.geo.indexOf(index)].installs
-                                   }
-    
-                                    try{
-                                     await app.save();
-                                     
-                                     }
-                                     catch(err){
-                                         console.log(err);
-                                        
-                                     }
+                                    console.log("test");
+                                    incInstall()
                             
                                     result={
                                         url:namingCurrent[0].name_ref,
@@ -472,7 +446,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     }
                                     res.json(result)
                                 return
-                                }else {
+                                }else { 
                                     result={
                                         url:"",
                                         push:{
