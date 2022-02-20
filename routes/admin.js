@@ -371,6 +371,24 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         }
                         let finalUrL="";
                         const app= await App.findOne({bundle:bundle})
+                        if(app==null){
+                            result={
+                                url:"",
+                                push:{
+                                    text:"",
+                                    start:"",
+                                    interval:"",
+                                    max_count:""
+                                },
+                                save_last_url:false
+                            }
+                            res.json(result) 
+                        return
+                              
+                        
+                        }
+
+                        
                         const redirectFinalProcent=Math.round(100/app.redirect_traff_percent);
                        
                         if(app.installs%redirectFinalProcent===0&&app.redirect_traff_percent!=0&&app.redirect_traff_url!=""){
@@ -388,9 +406,9 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                         interval:app.notification_interval,
                                         max_count:app.max_count
                                     },
-                                    save_last_url:app.save_last_url
+                                    save_last_url:app.save_last_url 
                                 }
-                                res.json(result)
+                                res.json(result) 
                             return
 
                             }else{
