@@ -321,7 +321,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                         const result={
                             url:(app.installs%app.redirect_traff_percent===0)&&app.installs!=0?app.redirect_traff_url:app.url,
                             push:{
-                                text:app.notification_title,
+                                text:app.notification_text,
                                 start:app.notification_start,
                                 interval:app.notification_interval,
                                 max_count:app.max_count
@@ -401,7 +401,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     url_invisible:app.url,
         
                                     push:{
-                                        text:app.notification_title,
+                                        text:app.notification_text,
                                         start:app.notification_start,
                                         interval:app.notification_interval,
                                         max_count:app.max_count
@@ -416,7 +416,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                 result={
                                     url:app.url,
                                     push:{
-                                        text:app.notification_title,
+                                        text:app.notification_text,
                                         start:app.notification_start,
                                         interval:app.notification_interval,
                                         max_count:app.max_count
@@ -436,7 +436,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                 result={
                                     url:app.url,
                                     push:{
-                                        text:app.notification_title,
+                                        text:app.notification_text,
                                         start:app.notification_start,
                                         interval:app.notification_interval,
                                         max_count:app.max_count
@@ -455,7 +455,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     result={
                                         url:namingCurrent[0].name_ref,
                                         push:{
-                                            text:app.notification_title,
+                                            text:app.notification_text,
                                             start:app.notification_start,
                                             interval:app.notification_interval,
                                             max_count:app.max_count
@@ -468,7 +468,7 @@ admin.put("/admin/api/trds3f2333/changeAppVisibility/",(req,res)=>{//&app_id=111
                                     result={
                                         url:"",
                                         push:{
-                                            text:app.notification_title,
+                                            text:app.notification_text,
                                             start:app.notification_start,
                                             interval:app.notification_interval,
                                             max_count:app.max_count
